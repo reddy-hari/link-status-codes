@@ -9,8 +9,7 @@
       "matches": [
         "https://stackoverflow.com/*",
         "https://developer.chrome.com/*",
-        "https://developer.mozilla.org/*",
-        "https://*.netlify.app/*"
+        "https://developer.mozilla.org/*"
       ]
     }
   ]

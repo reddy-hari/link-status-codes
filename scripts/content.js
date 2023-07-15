@@ -9,18 +9,13 @@ if (hyperlinks.length) {
     link.addEventListener("mouseover", async () => {
       try {
         const res = await fetchLink(link.href);
-        // console.log(res);
-        if (res.status == 200 && res.ok) {
-          console.log(`Link is good.`);
-          if (!linkStatus) {
-            linkStatus = document.createElement("span");
-            linkStatus.style.fontSize = "10px";
-            linkStatus.style.padding = "5px";
-            link.insertAdjacentElement("afterend", linkStatus);
-          }
-          linkStatus.textContent = `${res.status}`;
+        if (!linkStatus) {
+          linkStatus = document.createElement("span");
+          linkStatus.style.fontSize = "10px";
+          linkStatus.style.padding = "5px";
+          link.insertAdjacentElement("afterend", linkStatus);
         }
-        if (res.status == 404) console.log(`Link returned a 404.`);
+        linkStatus.textContent = `${res.status}`;
       } catch (error) {
         console.log(`Possibly broken link`);
       }
