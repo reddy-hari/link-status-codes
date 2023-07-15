@@ -1,0 +1,17 @@
+{
+  "name": "404 Checker",
+  "description": "Basic 404 Checker Extension",
+  "version": "1.0",
+  "manifest_version": 3,
+  "content_scripts": [
+    {
+      "js": ["scripts/content.js"],
+      "matches": [
+        "https://stackoverflow.com/*",
+        "https://developer.chrome.com/*",
+        "https://developer.mozilla.org/*",
+        "https://*.netlify.app/*"
+      ]
+    }
+  ]
+}
