@@ -5,8 +5,9 @@
   "manifest_version": 3,
   "content_scripts": [
     {
-      "js": ["scripts/content.js"],
+      "js": ["content.js"],
       "matches": [
+        "http://localhost:*/*",
         "https://stackoverflow.com/*",
         "https://developer.chrome.com/*",
         "https://developer.mozilla.org/*"

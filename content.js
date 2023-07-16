@@ -7,8 +7,13 @@ let linkStatus;
 if (hyperlinks.length) {
   hyperlinks.forEach((link) => {
     link.addEventListener("mouseover", async () => {
+      let res;
       try {
-        const res = await fetchLink(link.href);
+        res = await fetchLink(link.href);
+      } catch (error) {
+        res = await fetchLink(corsProxy + link.href);
+        console.error(`Error Occurred - ${error}`);
+      } finally {
         if (!linkStatus) {
           linkStatus = document.createElement("span");
           linkStatus.style.fontSize = "10px";
@@ -16,8 +21,6 @@ if (hyperlinks.length) {
           link.insertAdjacentElement("afterend", linkStatus);
         }
         linkStatus.textContent = `${res.status}`;
-      } catch (error) {
-        console.log(`Possibly broken link`);
       }
     });
     link.addEventListener("mouseout", () => {
@@ -29,7 +32,8 @@ if (hyperlinks.length) {
 
 const fetchLink = async (link) => {
   const response = await fetch(link, {
-    method: "HEAD",
+    method: "GET",
+    mode: "cors",
   });
   return response;
 };
