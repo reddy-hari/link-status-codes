@@ -7,13 +7,21 @@ let linkStatus;
 if (internalLinks.length) {
   internalLinks.forEach((link) => {
     link.addEventListener("mouseover", async () => {
-      if (!linkStatus) {
-        linkStatus = document.createElement("span");
-        linkStatus.style.fontSize = "10px";
-        linkStatus.style.padding = "5px";
-        link.insertAdjacentElement("afterend", linkStatus);
+      let res;
+      try {
+        res = await fetchLink(getCurrentDomain() + link.href);
+      } catch (error) {
+        res = await fetchLink(corsProxy + link.href);
+        console.error(`Error Occurred - ${error}`);
+      } finally {
+        if (!linkStatus) {
+          linkStatus = document.createElement("span");
+          linkStatus.style.fontSize = "10px";
+          linkStatus.style.padding = "5px";
+          link.insertAdjacentElement("afterend", linkStatus);
+        }
+        linkStatus.textContent = `${res.status}`;
       }
-      linkStatus.textContent = `Internal Link`;
     });
     link.addEventListener("mouseout", () => {
       if (linkStatus) linkStatus.remove();
@@ -55,3 +63,7 @@ const fetchLink = async (link) => {
   });
   return response;
 };
+
+function getCurrentDomain() {
+  return window.location.origin;
+}
