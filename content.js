@@ -4,6 +4,24 @@ const hyperlinks = document.querySelectorAll("a[href^='http']");
 const internalLinks = document.querySelectorAll("a[href^='#'], a[href^='/']");
 let linkStatus;
 
+if (internalLinks.length) {
+  internalLinks.forEach((link) => {
+    link.addEventListener("mouseover", async () => {
+      if (!linkStatus) {
+        linkStatus = document.createElement("span");
+        linkStatus.style.fontSize = "10px";
+        linkStatus.style.padding = "5px";
+        link.insertAdjacentElement("afterend", linkStatus);
+      }
+      linkStatus.textContent = `Internal Link`;
+    });
+    link.addEventListener("mouseout", () => {
+      if (linkStatus) linkStatus.remove();
+      linkStatus = null;
+    });
+  });
+}
+
 if (hyperlinks.length) {
   hyperlinks.forEach((link) => {
     link.addEventListener("mouseover", async () => {
