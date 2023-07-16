@@ -1,60 +1,36 @@
 const corsProxy = "https://cors-anywhere.herokuapp.com/";
 
-const hyperlinks = document.querySelectorAll("a[href^='http']");
-const internalLinks = document.querySelectorAll("a[href^='#'], a[href^='/']");
+const links = document.querySelectorAll(
+  "a[href^='http'], a[href^='#'], a[href^='/']"
+);
 let linkStatus;
 
-if (internalLinks.length) {
-  internalLinks.forEach((link) => {
-    link.addEventListener("mouseover", async () => {
-      let res;
-      try {
-        res = await fetchLink(getCurrentDomain() + link.href);
-      } catch (error) {
-        res = await fetchLink(corsProxy + link.href);
-        console.error(`Error Occurred - ${error}`);
-      } finally {
-        if (!linkStatus) {
-          linkStatus = document.createElement("span");
-          linkStatus.style.fontSize = "10px";
-          linkStatus.style.padding = "5px";
-          link.insertAdjacentElement("afterend", linkStatus);
-        }
-        linkStatus.textContent = `${res.status}`;
+links.forEach((link) => {
+  link.addEventListener("mouseover", async () => {
+    let res;
+    try {
+      res = await fetchLink(link.href);
+    } catch (error) {
+      res = await fetchLink(corsProxy + link.href);
+      console.error(`Error Occurred - ${error}`);
+    } finally {
+      if (!linkStatus) {
+        linkStatus = document.createElement("span");
+        linkStatus.style.fontSize = "10px";
+        linkStatus.style.padding = "5px";
+        link.insertAdjacentElement("afterend", linkStatus);
       }
-    });
-    link.addEventListener("mouseout", () => {
-      if (linkStatus) linkStatus.remove();
-      linkStatus = null;
-    });
+      linkStatus.textContent = `${res.status}`;
+    }
   });
-}
 
-if (hyperlinks.length) {
-  hyperlinks.forEach((link) => {
-    link.addEventListener("mouseover", async () => {
-      let res;
-      try {
-        res = await fetchLink(link.href);
-      } catch (error) {
-        res = await fetchLink(corsProxy + link.href);
-        console.error(`Error Occurred - ${error}`);
-      } finally {
-        if (!linkStatus) {
-          linkStatus = document.createElement("span");
-          linkStatus.style.fontSize = "10px";
-          linkStatus.style.padding = "5px";
-          link.insertAdjacentElement("afterend", linkStatus);
-        }
-        linkStatus.textContent = `${res.status}`;
-      }
-    });
-    link.addEventListener("mouseout", () => {
-      if (linkStatus) linkStatus.remove();
+  link.addEventListener("mouseout", () => {
+    if (linkStatus) {
+      linkStatus.remove();
       linkStatus = null;
-    });
+    }
   });
-}
+});
 
 const fetchLink = async (link) => {
   const response = await fetch(link, {
@@ -63,7 +39,3 @@ const fetchLink = async (link) => {
   });
   return response;
 };
-
-function getCurrentDomain() {
-  return window.location.origin;
-}
