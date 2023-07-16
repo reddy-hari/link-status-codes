@@ -11,7 +11,8 @@
         "https://stackoverflow.com/*",
         "https://developer.chrome.com/*",
         "https://developer.mozilla.org/*",
-        "https://en.wikipedia.org/*"
+        "https://en.wikipedia.org/*",
+        "https://github.com/*"
       ]
     }
   ]
