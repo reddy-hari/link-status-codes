@@ -1,4 +1,4 @@
-const corsProxy = "https://cors-anywhere.herokuapp.com/";
+const corsProxy = "http://localhost:4000/proxy/";
 
 const links = document.querySelectorAll(
   "a[href^='http'], a[href^='#'], a[href^='/']"
@@ -14,21 +14,12 @@ links.forEach((link) => {
       res = await fetchLink(corsProxy + link.href);
       console.error(`Error Occurred - ${error}`);
     } finally {
-      if (!linkStatus) {
-        linkStatus = document.createElement("span");
-        linkStatus.style.fontSize = "10px";
-        linkStatus.style.padding = "5px";
-        link.insertAdjacentElement("afterend", linkStatus);
-      }
-      linkStatus.textContent = `${res.status}`;
+      link.title = `${res.status}`;
     }
   });
 
   link.addEventListener("mouseout", () => {
-    if (linkStatus) {
-      linkStatus.remove();
-      linkStatus = null;
-    }
+    link.title = "";
   });
 });
 

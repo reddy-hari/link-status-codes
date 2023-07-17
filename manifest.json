@@ -3,11 +3,19 @@
   "description": "Basic 404 Checker Extension",
   "version": "1.0",
   "manifest_version": 3,
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "https://localhost:3000/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "js": ["content.js"],
       "matches": [
-        "http://localhost:*/*",
+        "http://localhost:3000/*",
         "https://stackoverflow.com/*",
         "https://developer.chrome.com/*",
         "https://developer.mozilla.org/*",
